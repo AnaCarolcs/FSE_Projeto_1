@@ -27,7 +27,7 @@ void write_on_log(temperature_info temp, int controle)
 {
     FILE *file = fopen("log.csv", "a");
 
-    fprintf(file, "%s,%f,%f,%f,%d\n", getTimestamp(), temp.interna,
+    fprintf(file, "%s,%f,%f,%d,%d\n", get_time_info(), temp.interna,
             temp.externa, temp.referencia, controle);
     fclose(file);
 }
