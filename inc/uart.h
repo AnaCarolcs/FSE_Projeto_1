@@ -12,8 +12,6 @@
 #define ENV_SINAL 0x16
 #define ENV_SINAL_SUB 0xD1
 
-
-
 void init_UART(const char *path);
 void close_UART();
 

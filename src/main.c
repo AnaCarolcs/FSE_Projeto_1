@@ -1,16 +1,21 @@
 #include <stdio.h>
 
-#include "uart.h"
+#include "temperature.h"
+#include "terminal.h"
 
 int main()
 {
-    init_UART("/dev/serial0");
+    temperature_info parameters;
 
-    printf("%.2f\n", read_float_UART(TEMP_INT));
-    printf("%.2f\n", read_float_UART(TEMP_POTENC));
-    printf("%d\n", read_int_UART());
+    get_temperature_parameters(&parameters);
 
-    close_UART();
+    printf("%.2f %d", parameters.interna, parameters.control_mode);
+
+    function();
+
+    get_temperature_parameters(&parameters);
+
+    printf("%.2f %d", parameters.interna, parameters.control_mode);
 
     return 0;
 }
