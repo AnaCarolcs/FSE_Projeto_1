@@ -1,12 +1,12 @@
-CC := g++
-CFLAGS := -Wall -std=c++11 -lwiringPi
+CC := gcc
+CFLAGS := -Wall -lwiringPi
 
-SRCFILES := $(wildcard src/*.cpp)
+SRCFILES := $(wildcard src/*.c)
 
-all: $(SRCFILES:src/%.cpp=obj/%.o)
+all: $(SRCFILES:src/%.c=obj/%.o)
 	$(CC) $(CFLAGS) obj/*.o -o bin/main
 
-obj/%.o: src/%.cpp
+obj/%.o: src/%.c
 	$(CC) $(CFLAGS) -c $< -o $@ -I./inc
 
 .PHONY: clean
