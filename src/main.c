@@ -1,21 +1,20 @@
 #include <stdio.h>
 
-#include "temperature.h"
-#include "terminal.h"
+#include "control.h"
+
+#include "bme280.h"
+#include "log.h"
+#include "pwm.h"
 
 int main()
 {
-    temperature_info parameters;
+    bme280Init(1, 0x76);
+    create_csv();
+    init_pwm();
 
-    get_temperature_parameters(&parameters);
+    control();
 
-    printf("%.2f %d\n", parameters.interna, parameters.control_mode);
-
-    function();
-
-    get_temperature_parameters(&parameters);
-
-    printf("%.2f %d\n", parameters.interna, parameters.control_mode);
+    end_pwm();
 
     return 0;
 }

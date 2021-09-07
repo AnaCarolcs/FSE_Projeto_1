@@ -1,50 +1,46 @@
 #include "pwm.h"
 
-int init_pwm(int pin)
+int init_pwm()
 {
-    if (pin != RESISTOR && pin != VENTOINHA)
-        return -1;
-
     int setup = wiringPiSetup(); /* initialize wiringPi setup */
 
-    pinMode(pin, OUTPUT); /* set GPIO as output */
-
-    int create = softPwmCreate(pin, 1, 100); /* set PWM channel along with range*/
-
-    if (setup != 0 || create == -1)
+    if (setup != 0)
         return -1;
 
     return 0;
 }
 
-void send_signal(int pin, int intensity)
+void send_signal(int intensity)
 {
+    pinMode(VENTOINHA, OUTPUT);
+    softPwmCreate(VENTOINHA, 1, 100);
+    pinMode(RESISTOR, OUTPUT);
+    softPwmCreate(RESISTOR, 1, 100);
+
     if (intensity >= 0)
     {
-        if (pin == RESISTOR)
-        {
-            softPwmWrite(VENTOINHA, 0);
-            softPwmWrite(pin, intensity);
-        }
-        else
-        {
-            if (intensity >= 40)
-                softPwmWrite(pin, intensity);
-            else
-                softPwmWrite(pin, 0);
 
-            softPwmWrite(RESISTOR, 0);
-        }
+        softPwmWrite(VENTOINHA, 0);
+        softPwmWrite(RESISTOR, intensity);
     }
     else
     {
-        softPwmWrite(VENTOINHA, 0);
+        if (intensity <= -40)
+            softPwmWrite(VENTOINHA, -intensity);
+        else
+            softPwmWrite(VENTOINHA, 0);
+
         softPwmWrite(RESISTOR, 0);
     }
 }
 
 void end_pwm()
 {
+    pinMode(VENTOINHA, OUTPUT);
+    softPwmCreate(VENTOINHA, 1, 100);
+    pinMode(RESISTOR, OUTPUT);
+    softPwmCreate(RESISTOR, 1, 100);
+
     softPwmWrite(VENTOINHA, 0);
     softPwmWrite(RESISTOR, 0);
 }
