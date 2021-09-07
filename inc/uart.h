@@ -12,11 +12,7 @@
 #define ENV_SINAL 0x16
 #define ENV_SINAL_SUB 0xD1
 
-int uart_device = -1;
-char device_address = 0x01;
 
-//190063441
-char my_id[] = {3,4,4,1};
 
 void init_UART(const char *path);
 void close_UART();

@@ -10,10 +10,17 @@
 unsigned char package[256];
 unsigned short crc;
 
+int uart_device = -1;
+char device_address = 0x01;
+
+//190063441
+char my_id[] = {3,4,4,1};
+
 void create_default_package(int code, int sub_code){
     package[0] = device_address;
     package[1] = code;
     package[2] = sub_code;
+    memcpy(&package[3], my_id, 4); 
 }
 
 void write_uart(const void *buffer, size_t bytes)
@@ -72,7 +79,7 @@ void close_UART()
 void send_control_signal_UART(int data){
     create_default_package(ENV_SINAL, ENV_SINAL_SUB);
 
-    memcpy((void *)(&package[3]), data, sizeof(int));
+    memcpy((void *)(&package[3]), (void *)data, sizeof(int));
 
     crc = calcula_CRC(package, 4);
 
@@ -93,15 +100,11 @@ int read_int_UART(){
 
     create_default_package(SOLIC, SOLIC_EST);
 
-    crc = calcula_CRC(package, 3);
+    crc = calcula_CRC(package, 7);
 
-    memcpy((void *)(&package[3]), (void *)&crc, 1);
+    memcpy((void *)(&package[7]), (void *)&crc, 2);
 
-    crc = calcula_CRC(package, 4);
-
-    memcpy((void *)(&package[4]), (void *)&crc, 1);
-
-    write_uart((void *)package, 5);
+    write_uart((void *)package, 9);
 
     sleep(1);
 
@@ -113,8 +116,7 @@ int read_int_UART(){
 
     read_uart(&result, 4);
 
-    read_uart((void *)&tmp_char, 1);
-    read_uart((void *)&tmp_char, 1);
+    read_uart((void *)&tmp_char, 2);
 
     return result;
 }
@@ -125,15 +127,11 @@ float read_float_UART(int sub_code){
 
     create_default_package(SOLIC, sub_code);
 
-    crc = calcula_CRC(package, 3);
+    crc = calcula_CRC(package, 7);
 
-    memcpy((void *)(&package[3]), (void *)&crc, 1);
+    memcpy((void *)(&package[7]), (void *)&crc, 2);
 
-    crc = calcula_CRC(package, 4);
-
-    memcpy((void *)(&package[4]), (void *)&crc, 1);
-
-    write_uart((void *)package, 5);
+    write_uart((void *)package, 9);
 
     sleep(1);
 
@@ -145,8 +143,7 @@ float read_float_UART(int sub_code){
 
     read_uart(&result, 4);
 
-    read_uart((void *)&tmp_char, 1);
-    read_uart((void *)&tmp_char, 1);
+    read_uart((void *)&tmp_char, 2);
 
     return result;
 }
