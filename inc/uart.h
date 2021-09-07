@@ -9,8 +9,8 @@
 #define TEMP_POTENC 0xC2
 #define SOLIC_EST 0xC3
 
-#define WRITE 0x16
-#define WRITE_SIGNAL 0xD1
+#define ENV_SINAL 0x16
+#define ENV_SINAL_SUB 0xD1
 
 int uart_device = -1;
 char device_address = 0x01;
