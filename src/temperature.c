@@ -66,7 +66,6 @@ void set_user_mode(int option, data_parameters data)
 
 void get_temperature_parameters(temperature_info *output)
 {
-    init_UART("/dev/serial0");
     bme280Init(1, 0x76);
 
     float potentiometer_tmp = read_float_UART(TEMP_POTENC);

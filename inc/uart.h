@@ -12,12 +12,12 @@
 #define ENV_SINAL 0x16
 #define ENV_SINAL_SUB 0xD1
 
-void init_UART(const char *path);
-void close_UART();
+int init_UART(const char *path);
+void close_UART(int uart_device);
 
 void send_control_signal_UART(int data);
 
 int read_int_UART();
-float read_float_UART();
+float read_float_UART(int sub_code);
 
 #endif
