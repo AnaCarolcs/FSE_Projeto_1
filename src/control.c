@@ -1,6 +1,12 @@
 #include "control.h"
 
+temperature_info temperature_params = {0.0, 0.0, 0, 0, 0, 0, 0, 0};
 int last_on_off = 0;
+
+temperature_info get_temperature_params()
+{
+    return temperature_params;
+}
 
 int get_pid_control(temperature_info params)
 {
@@ -31,14 +37,15 @@ int get_on_off_control(temperature_info params)
     return control_signal;
 }
 
-void control()
+void *control()
 {
     while (1)
     {
-        temperature_info temperature_params;
         int control_signal;
 
         get_temperature_parameters(&temperature_params);
+
+        set_menu_options();
 
         if (temperature_params.control_mode == ON_OFF_MODE)
             control_signal = get_on_off_control(temperature_params);
@@ -52,9 +59,5 @@ void control()
         send_control_signal_UART(control_signal);
 
         write_on_log(temperature_params, control_signal);
-
-        sleep(10);
-
-        break;
     }
 }
