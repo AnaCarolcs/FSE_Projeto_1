@@ -101,7 +101,6 @@ void send_control_signal_UART(int data)
 
 int read_int_UART()
 {
-    char tmp_char;
     int result;
 
     int uart_device = init_UART(path);
@@ -116,24 +115,30 @@ int read_int_UART()
 
     sleep(1);
 
-    read_uart(uart_device, (void *)&tmp_char, sizeof(char));
+    short crc;
 
-    read_uart(uart_device, (void *)&tmp_char, sizeof(char));
+    read_uart(uart_device, (void *)&package[0], sizeof(char));
 
-    read_uart(uart_device, (void *)&tmp_char, sizeof(char));
+    read_uart(uart_device, (void *)&package[1], sizeof(char));
 
-    read_uart(uart_device, &result, 4);
+    read_uart(uart_device, (void *)&package[2], sizeof(char));
 
-    read_uart(uart_device, (void *)&tmp_char, 2);
+    read_uart(uart_device, (void *)&result, 4);
+
+    read_uart(uart_device, (void *)&crc, 2);
 
     close_UART(uart_device);
+
+    memcpy((void *)&package[3], (const void *)&result, 4);
+
+    if (calcula_CRC(package, 7) != crc)
+        return -1;
 
     return result;
 }
 
 float read_float_UART(int sub_code)
 {
-    char tmp_char;
     float result;
 
     int uart_device = init_UART(path);
@@ -148,17 +153,24 @@ float read_float_UART(int sub_code)
 
     sleep(1);
 
-    read_uart(uart_device, (void *)&tmp_char, sizeof(char));
+    short crc;
 
-    read_uart(uart_device, (void *)&tmp_char, sizeof(char));
+    read_uart(uart_device, (void *)&package[0], sizeof(char));
 
-    read_uart(uart_device, (void *)&tmp_char, sizeof(char));
+    read_uart(uart_device, (void *)&package[1], sizeof(char));
+
+    read_uart(uart_device, (void *)&package[2], sizeof(char));
 
     read_uart(uart_device, (void *)&result, 4);
 
-    read_uart(uart_device, (void *)&tmp_char, 2);
+    read_uart(uart_device, (void *)&crc, 2);
 
     close_UART(uart_device);
+
+    memcpy((void *)&package[3], (const void *)&result, 4);
+
+    if (calcula_CRC(package, 7) != crc)
+        return -1;
 
     return result;
 }

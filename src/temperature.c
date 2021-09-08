@@ -70,6 +70,9 @@ void get_temperature_parameters(temperature_info *output)
     float internal_tmp = read_float_UART(TEMP_INT);
     int key_state = read_int_UART();
 
+    if (potentiometer_tmp == -1 || internal_tmp == -1 || key_state == -1)
+        return;
+
     int T, P, H;
     bme280ReadValues(&T, &P, &H);
     float external_tmp = (T - 150) / 100;
