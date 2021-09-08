@@ -5,7 +5,7 @@ volatile int user_mode_tmp = 0;
 volatile int user_mode_hst = 0;
 volatile int user_mode_pid = 0;
 
-volatile float user_temperature;
+volatile int user_temperature;
 volatile int user_histerese;
 volatile int user_control;
 volatile int user_kp;
@@ -17,7 +17,7 @@ void set_user_mode(int option, data_parameters data)
     switch (option)
     {
     case CONTROL_USER:
-        if (data.dt1 < 0)
+        if (data.dt1 != 0 && data.dt1 != 1)
         {
             user_mode_control = 0;
             break;
@@ -27,14 +27,14 @@ void set_user_mode(int option, data_parameters data)
         user_control = data.dt1;
         break;
     case TEMPERATURE_USER:
-        if (data.temp <= 0)
+        if (data.dt1 <= 0)
         {
             user_mode_tmp = 0;
             break;
         }
 
         user_mode_tmp = 1;
-        user_temperature = data.temp;
+        user_temperature = data.dt1;
         break;
     case HISTERESE_USER:
         if (data.dt1 <= 0)
