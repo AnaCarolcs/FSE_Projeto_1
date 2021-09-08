@@ -1,5 +1,5 @@
 #include "pwm.h"
-
+#include "stdio.h"
 int init_pwm()
 {
     int setup = wiringPiSetup(); /* initialize wiringPi setup */
@@ -13,9 +13,9 @@ int init_pwm()
 void send_signal(int intensity)
 {
     pinMode(VENTOINHA, OUTPUT);
-    softPwmCreate(VENTOINHA, 1, 100);
+    softPwmCreate(VENTOINHA, 0, 100);
     pinMode(RESISTOR, OUTPUT);
-    softPwmCreate(RESISTOR, 1, 100);
+    softPwmCreate(RESISTOR, 0, 100);
 
     if (intensity >= 0)
     {
@@ -37,10 +37,12 @@ void send_signal(int intensity)
 void end_pwm()
 {
     pinMode(VENTOINHA, OUTPUT);
-    softPwmCreate(VENTOINHA, 1, 100);
+    softPwmCreate(VENTOINHA, 0, 100);
     pinMode(RESISTOR, OUTPUT);
-    softPwmCreate(RESISTOR, 1, 100);
+    softPwmCreate(RESISTOR, 0, 100);
 
-    softPwmWrite(VENTOINHA, 0);
-    softPwmWrite(RESISTOR, 0);
+    printf("TO AQUI");
+
+    softPwmStop(VENTOINHA);
+    softPwmStop(RESISTOR);
 }
