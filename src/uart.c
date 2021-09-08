@@ -86,17 +86,13 @@ void send_control_signal_UART(int data)
 
     create_default_package(ENV_SINAL, ENV_SINAL_SUB);
 
-    memcpy((void *)(&package[3]), (void *)data, sizeof(int));
+    memcpy((void *)(&package[7]), (void *)&data, sizeof(int));
 
-    crc = calcula_CRC(package, 4);
+    crc = calcula_CRC(package, 11);
 
-    memcpy((void *)(&package[4]), (void *)&crc, 1);
+    memcpy((void *)(&package[11]), (void *)&crc, 2);
 
-    crc = calcula_CRC(package, 5);
-
-    memcpy((void *)(&package[5]), (void *)&crc, 1);
-
-    write_uart(uart_device, (void *)&package, 6);
+    write_uart(uart_device, (void *)&package, 13);
 
     sleep(1);
 

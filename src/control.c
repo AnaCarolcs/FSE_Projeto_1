@@ -49,7 +49,7 @@ void control()
         }
 
         send_signal(control_signal);
-        // send_control_signal_UART(control_signal);
+        send_control_signal_UART(control_signal);
 
         write_on_log(temperature_params, control_signal);
 
