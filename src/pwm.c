@@ -41,8 +41,6 @@ void end_pwm()
     pinMode(RESISTOR, OUTPUT);
     softPwmCreate(RESISTOR, 0, 100);
 
-    printf("TO AQUI");
-
     softPwmStop(VENTOINHA);
     softPwmStop(RESISTOR);
 }

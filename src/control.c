@@ -45,6 +45,8 @@ void *control()
 
         get_temperature_parameters(&temperature_params);
 
+        show_temperature_data(&temperature_params);
+
         set_menu_options();
 
         if (temperature_params.control_mode == ON_OFF_MODE)

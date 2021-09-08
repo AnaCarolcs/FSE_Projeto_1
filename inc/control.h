@@ -4,6 +4,7 @@
 #define ON_OFF_MODE 0
 #define PID_MODE 1
 
+#include "control_lcd_16x2.h"
 #include "temperature.h"
 #include "terminal.h"
 #include "pid.h"

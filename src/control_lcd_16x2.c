@@ -17,7 +17,7 @@
 void typeFloat(float myFloat)
 {
     char buffer[20];
-    sprintf(buffer, "%4.2f", myFloat);
+    sprintf(buffer, "%02.2f", myFloat);
     typeln(buffer);
 }
 
@@ -85,4 +85,20 @@ void lcd_init()
     lcd_byte(0x28, LCD_CMD);
     lcd_byte(0x01, LCD_CMD);
     delayMicroseconds(500);
+}
+
+void show_temperature_data(temperature_info *temperature_params)
+{
+    lcdLoc(LINE1);
+
+    typeln("TI:");
+    typeFloat(temperature_params->interna);
+
+    typeln(" TR:");
+    typeFloat(temperature_params->referencia);
+
+    lcdLoc(LINE2);
+
+    typeln("TE:");
+    typeFloat(temperature_params->externa);
 }
