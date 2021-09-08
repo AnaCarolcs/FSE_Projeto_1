@@ -19,8 +19,6 @@
 
 #include "temperature.h"
 
-int fd;
-
 void show_temperature_data(temperature_info *temperature_params);
 
 void lcd_init();

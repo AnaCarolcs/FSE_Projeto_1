@@ -14,10 +14,12 @@
 
 #include "control_lcd_16x2.h"
 
+int fd;
+
 void typeFloat(float myFloat)
 {
     char buffer[20];
-    sprintf(buffer, "%02.2f", myFloat);
+    sprintf(buffer, "%.1f", myFloat);
     typeln(buffer);
 }
 
@@ -78,6 +80,10 @@ void lcd_toggle_enable(int bits)
 
 void lcd_init()
 {
+    if (wiringPiSetup() == -1)
+        exit(1);
+    fd = wiringPiI2CSetup(I2C_ADDR);
+
     lcd_byte(0x33, LCD_CMD);
     lcd_byte(0x32, LCD_CMD);
     lcd_byte(0x06, LCD_CMD);
